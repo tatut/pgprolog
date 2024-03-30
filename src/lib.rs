@@ -49,38 +49,9 @@ unsafe fn plprolog_call_handler(fcinfo: pg_sys::FunctionCallInfo) -> pg_sys::Dat
 }
 
 fn get_code(oid: pg_sys::Oid) -> String {
-    // Spi::get_one_with_args("SELECT prosrc FROM pg_proc WHERE oid=$1",
-    //                             vec![(PgBuiltInOids::TEXTOID::oid(), oid.into_datum())]) {
-
     match Spi::get_one::<&str>(format!("SELECT prosrc FROM pg_proc WHERE oid={0}", oid.as_u32().to_string()).as_str()) {
         Ok(Some(code)) => code.to_string(),
         Ok(None) => panic!("Code for procedure not found"),
         Err(err) => panic!("SPI error: {0}", err)
-    }
-}
-
-#[cfg(any(test, feature = "pg_test"))]
-#[pg_schema]
-mod tests {
-    use pgrx::prelude::*;
-
-    #[pg_test]
-    fn test_hello_pgprolog() {
-        assert_eq!("Hello, pgprolog", crate::hello_pgprolog());
-    }
-
-}
-
-/// This module is required by `cargo pgrx test` invocations.
-/// It must be visible at the root of your extension crate.
-#[cfg(test)]
-pub mod pg_test {
-    pub fn setup(_options: Vec<&str>) {
-        // perform one-off initialization when the pg_test framework starts
-    }
-
-    pub fn postgresql_conf_options() -> Vec<&'static str> {
-        // return any postgresql.conf settings that are required for your tests
-        vec![]
     }
 }
