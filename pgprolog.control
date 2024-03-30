@@ -1,0 +1,5 @@
+comment = 'pgprolog:  Created by pgrx'
+default_version = '@CARGO_VERSION@'
+module_pathname = '$libdir/pgprolog'
+relocatable = false
+superuser = true
