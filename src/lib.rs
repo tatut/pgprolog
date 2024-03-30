@@ -9,16 +9,6 @@ use std::time::{Duration, Instant};
 
 pgrx::pg_module_magic!();
 
-#[pg_extern]
-fn hello_pgprolog() -> &'static str {
-    "Hello, pgprolog"
-}
-
-#[pg_extern]
-fn hello_add(a: i32, b: i32) -> i32 {
-    a + b
-}
-
 #[pg_extern(sql = "CREATE FUNCTION plprolog_call_handler() RETURNS language_handler LANGUAGE c AS 'MODULE_PATHNAME', '@FUNCTION_NAME@';")]
 unsafe fn plprolog_call_handler(fcinfo: pg_sys::FunctionCallInfo) -> pg_sys::Datum {
     let str : Option<&str> = pg_getarg(fcinfo, 0);
