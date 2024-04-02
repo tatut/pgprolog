@@ -9,7 +9,13 @@ This embeds [Scryer Prolog](https://www.scryer.pl) into a PostgreSQL extension.
 
 ## Running
 
-Run with `cargo pgrx run`.
+You'll need [pgrx](https://github.com/pgcentralfoundation/pgrx) installed on your system. To install **pgrx** you can use cargo:
+```
+cargo install --locked cargo-pgrx
+cargo pgrx init
+```
+
+After that, run with `cargo pgrx run`.
 
 Then you can create the extension and language:
 ```
